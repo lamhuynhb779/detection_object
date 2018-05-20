@@ -34,6 +34,18 @@ import tensorflow as tf
 
 from core import standard_fields as fields
 
+# My code
+import re
+import myobject as mo
+import chitietdoituong as ctdt
+from object_detection import xuly as xl
+# from object_detection import object_detection_tutorial as odt
+# import os, sys
+# scriptpath = "../object_detection_tutorial.py"
+# Add the directory containing your module to the Python path (wants absolute paths)
+# sys.path.append(os.path.abspath(scriptpath))
+# scriptpath = "utils/visualization_utils.py"
+# sys.path.append(os.path.abspath(scriptpath))
 
 _TITLE_LEFT_MARGIN = 10
 _TITLE_TOP_MARGIN = 10
@@ -62,7 +74,6 @@ STANDARD_COLORS = [
     'Teal', 'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White',
     'WhiteSmoke', 'Yellow', 'YellowGreen'
 ]
-
 
 def save_image_array_as_png(image, output_path):
   """Saves an image (represented as a numpy array) to PNG.
@@ -187,11 +198,24 @@ def draw_bounding_box_on_image(image,
   else:
     text_bottom = bottom + total_display_str_height
 
-  id_object = 1
-
+  # list_obj = []
+  # list_ctdt = []
+  # id_object = 1
+  # pattern_name = '[a-zA-Z]+ [a-zA-Z]+|[a-zA-Z]+'
+  # pattern_prob = '\d+'
+  # xl.thietLapListObjectVaChiTietDoiTuong(display_str_list)
   # Reverse list and print from bottom to top.
   for display_str in display_str_list[::-1]:
-    print(display_str)
+    # my_name_obj = re.search(pattern_name, display_str)
+    # my_prob_obj = re.search(pattern_prob, display_str)
+    # my_obj = mo.MyObject()
+    # my_obj.setId(id_object)
+    # my_obj.setTenDoiTuong(my_name_obj)
+    # my_obj.setXacSuat(my_prob_obj)
+
+    # my_ctdt = ctdt.ChiTietDoiTuong()
+    # my_ctdt.setIdObject(id_object)
+
     text_width, text_height = font.getsize(display_str)
     margin = np.ceil(0.05 * text_height)
     draw.rectangle(
@@ -205,6 +229,9 @@ def draw_bounding_box_on_image(image,
         font=font)
     text_bottom -= text_height - 2 * margin
 
+    # list_obj.append(my_obj)
+    # list_ctdt.append(my_ctdt)
+    # id_object += 1
 
 def draw_bounding_boxes_on_image_array(image,
                                        boxes,
@@ -528,7 +555,6 @@ def draw_mask_on_image_array(image, mask, color='red', alpha=0.4):
   pil_image = Image.composite(pil_solid_color, pil_image, pil_mask)
   np.copyto(image, np.array(pil_image.convert('RGB')))
 
-
 def visualize_boxes_and_labels_on_image_array(
     image,
     boxes,
@@ -545,7 +571,14 @@ def visualize_boxes_and_labels_on_image_array(
     line_thickness=4,
     groundtruth_box_visualization_color='black',
     skip_scores=False,
-    skip_labels=False):
+    skip_labels=False,
+    id_object=0,
+    list_obj = None,
+    list_ctdt = None):
+# My code
+  list_name_prob = []
+# end my code
+    # my_ctdt.setIdImage(odt.layIdImage())
   """Overlay labeled boxes on an image with formatted scores and label names.
 
   This function groups boxes that correspond to the same location
@@ -626,6 +659,7 @@ def visualize_boxes_and_labels_on_image_array(
         else:
           box_to_color_map[box] = STANDARD_COLORS[
               classes[i] % len(STANDARD_COLORS)]
+        list_name_prob.append(display_str)
 
   # Draw all boxes onto image.
   for box, color in box_to_color_map.items():
@@ -660,9 +694,13 @@ def visualize_boxes_and_labels_on_image_array(
           color=color,
           radius=line_thickness / 2,
           use_normalized_coordinates=use_normalized_coordinates)
-
+  xl.thietLapListObjectVaChiTietDoiTuong(
+    list_name_prob,
+    id_object,
+    list_obj,
+    list_ctdt
+  )
   return image
-
 
 def add_cdf_image_summary(values, name):
   """Adds a tf.summary.image for a CDF plot of the values.
@@ -693,6 +731,3 @@ def add_cdf_image_summary(values, name):
     return image
   cdf_plot = tf.py_func(cdf_plot, [values], tf.uint8)
   tf.summary.image(name, cdf_plot)
-
-def thietLapCacThongTinCuaAnh(myobject, myctdt):
-  

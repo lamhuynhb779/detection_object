@@ -22,3 +22,6 @@ class MyImage:
 
 	def setDate(self, mydate):
 		self.date = mydate
+
+	def toString(self):
+		print("id: %s, path: %s, date: %s" %(self.id, self.path, self.date))

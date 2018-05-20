@@ -22,3 +22,6 @@ class ChiTietDoiTuong:
 
 	def setSoLuong(self, soluong):
 		self.soluong = soluong
+
+	def toString(self):
+		print("id_obj: %s,id_img: %s,sl: %s" %(self.id_object, self.id_image, self.soluong))

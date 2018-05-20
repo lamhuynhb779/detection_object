@@ -32,6 +32,10 @@ import myimage as mi
 import myobject as mo
 import chitietdoituong as ctdt
 import datetime, time
+# import visualization_utils as vu
+list_image = []
+list_obj = []
+list_ctdt = []
 
 #if tf.__version__ < '1.4.0':
  # raise ImportError('Please upgrade your tensorflow installation to v1.4.* or later!')
@@ -199,25 +203,17 @@ def run_inference_for_single_image(image, graph):
         output_dict['detection_masks'] = output_dict['detection_masks'][0]
   return output_dict
 
-
 # In[ ]:
 
+import xuly as xl
 id_image = 1
-list_image = []
-
 for image_path in TEST_IMAGE_PATHS:
-  mydate = datetime.datetime.now().strftime("%y-%m-%d")
-  my_img = mi.MyImage()
-  my_obj = mo.MyObject()
-  my_ctdt = ctdt.ChiTietDoiTuong()
-
-  my_img.setId(id_image)
-  my_img.setPath(image_path)
-  my_img.setDate(mydate)
-
-  my_ctdt.setIdImage(id_image)
-
-  
+  # mydate = datetime.datetime.now().strftime("%Y-%m-%d")
+  # my_img = mi.MyImage()
+  # my_img.setId(id_image)
+  # my_img.setPath(image_path)
+  # my_img.setDate(mydate)
+  xl.thietLapListImage(image_path, id_image, list_image)
 
   image = Image.open(image_path)
   # the array based representation of the image will be used later in order to prepare the
@@ -237,9 +233,58 @@ for image_path in TEST_IMAGE_PATHS:
       category_index,
       instance_masks=output_dict.get('detection_masks'),
       use_normalized_coordinates=True,
-      line_thickness=8)
-  print(category_index)
+      line_thickness=8,
+      id_object = id_image,
+      list_obj = list_obj,
+      list_ctdt = list_ctdt)
+  id_image += 1
   plt.figure(figsize=IMAGE_SIZE)
   plt.imshow(image_np)
   plt.show()
 
+# print('Image')
+# for i in list_image:
+#   i.toString()
+# print('Object')
+# for i in list_obj:
+#   i.toString()
+# print('Chi tiet')
+# for i in list_ctdt:
+#   i.toString()
+temp = 0
+l = len(list_image)
+json = '{'
+json += '\"images\": ['
+for i in range(l):
+  json += '{'
+  json += '\"id\": ' + str(list_image[i].getId()) + ','
+  json += '\"path\": ' + '\"' + (list_image[i].getPath()).replace("\\", "\\") + '\",'
+  json += '\"date\": ' + '\"' + list_image[i].getDate() + '\",'
+  json += '\"objects\": ['
+  current_img_id = list_image[i].getId()
+  print("current: %s" %current_img_id)
+  count_obj = sum(obj.getIdImage() == current_img_id for obj in list_ctdt)
+  print(count_obj)
+  dem = 0
+  while dem < count_obj:
+    json += '{'
+    json += '\"id\": ' + str(list_obj[temp].getId()) + ','
+    json += '\"name\": ' + '\"' + list_obj[temp].getTenDoiTuong() + '\",'
+    json += '\"probability\": ' + str(list_obj[temp].getXacSuat()) + ','
+    json += '\"id_image\": ' + str(list_ctdt[temp].getIdImage()) + ','
+    json += '\"soluong\": ' + str(list_ctdt[temp].getSoLuong())
+    if dem + 1 == count_obj:
+      json += '}'
+    else:
+      json += '},'
+    temp += 1
+    dem += 1
+  json += ']'
+  if i + 1 == l:
+    json += '}'
+  else:
+    json += '},'
+json += ']'
+json += '}'
+
+print(json)

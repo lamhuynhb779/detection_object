@@ -20,5 +20,8 @@ class MyObject:
 	def	getXacSuat(self):
 		return self.prob
 
-	def setXacSuat(self, mydate):
+	def setXacSuat(self, prob):
 		self.prob = prob
+
+	def toString(self):
+		print("id: %s, tendoituong: %s, xacsuat: %s" %(self.id, self.name, self.prob))
