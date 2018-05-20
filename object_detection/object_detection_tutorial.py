@@ -27,6 +27,12 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import tensorflow as tf
 
+# My code 
+import myimage as mi
+import myobject as mo
+import chitietdoituong as ctdt
+import datetime, time
+
 #if tf.__version__ < '1.4.0':
  # raise ImportError('Please upgrade your tensorflow installation to v1.4.* or later!')
 
@@ -196,8 +202,23 @@ def run_inference_for_single_image(image, graph):
 
 # In[ ]:
 
+id_image = 1
+list_image = []
 
 for image_path in TEST_IMAGE_PATHS:
+  mydate = datetime.datetime.now().strftime("%y-%m-%d")
+  my_img = mi.MyImage()
+  my_obj = mo.MyObject()
+  my_ctdt = ctdt.ChiTietDoiTuong()
+
+  my_img.setId(id_image)
+  my_img.setPath(image_path)
+  my_img.setDate(mydate)
+
+  my_ctdt.setIdImage(id_image)
+
+  
+
   image = Image.open(image_path)
   # the array based representation of the image will be used later in order to prepare the
   # result image with boxes and labels on it.
