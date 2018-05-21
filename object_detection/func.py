@@ -20,6 +20,7 @@ print ("Kết nối db thành công!!")
 def parseJSON(myjson):
 	data = json.loads(myjson)
 	images = data['images']
+	
 	for  in xrange(1,10):
 		pass
 
