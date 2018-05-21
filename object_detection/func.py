@@ -1,4 +1,5 @@
 import configdb as config
+import json
 
 connection = config.getConnection()
 print ("Kết nối db thành công!!")
@@ -15,6 +16,12 @@ print ("Kết nối db thành công!!")
 # finally:
 # # Đóng kết nối (Close connection)
 # connection.close() 
+
+def parseJSON(myjson):
+	data = json.loads(myjson)
+	images = data['images']
+	for  in xrange(1,10):
+		pass
 
 def layIdLonNhat(table_name):
 	global connection
@@ -33,7 +40,7 @@ def themDuLieuBangImage():
 	global connection
 	try:
 		with connection.cursor() as cursor:
-			sql = "INSERT INTO image "
+			sql = "INSERT INTO image VALUES ("+
 			cursor.execute(sql)
 			for row in cursor:
 				return row
