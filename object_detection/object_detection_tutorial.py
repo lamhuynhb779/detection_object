@@ -32,6 +32,8 @@ import myimage as mi
 import myobject as mo
 import chitietdoituong as ctdt
 import datetime, time
+import func
+import move_file as mf
 # import visualization_utils as vu
 list_image = []
 list_obj = []
@@ -148,7 +150,8 @@ def load_image_into_numpy_array(image):
 # image2.jpg
 # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
 PATH_TO_TEST_IMAGES_DIR = 'test_images'
-TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(1, 10) ]
+COUNT_FILE_IMAGE = mf.countFile()
+TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(1, COUNT_FILE_IMAGE+1)] 
 
 # Size, in inches, of the output images.
 IMAGE_SIZE = (12, 8)
@@ -206,15 +209,20 @@ def run_inference_for_single_image(image, graph):
 # In[ ]:
 
 import xuly as xl
-id_image = 1
+id_image = []; id_object = []
+id_image.append(func.layIdLonNhat("image")+1)
+id_object.append(func.layIdLonNhat("object")+1)
+
+print("start: id_image: %s, id_object: %s" %(id_image[0], id_object[0]))
+
 for image_path in TEST_IMAGE_PATHS:
   # mydate = datetime.datetime.now().strftime("%Y-%m-%d")
   # my_img = mi.MyImage()
   # my_img.setId(id_image)
   # my_img.setPath(image_path)
   # my_img.setDate(mydate)
-  xl.thietLapListImage(image_path, id_image, list_image)
-
+  xl.thietLapListImage(image_path, id_image[0], list_image)
+  print("start: id_image: %s, id_object: %s" %(id_image[0], id_object[0]))
   image = Image.open(image_path)
   # the array based representation of the image will be used later in order to prepare the
   # result image with boxes and labels on it.
@@ -223,7 +231,6 @@ for image_path in TEST_IMAGE_PATHS:
   image_np_expanded = np.expand_dims(image_np, axis=0)
   # Actual detection.
   output_dict = run_inference_for_single_image(image_np, detection_graph)
-  print(output_dict)
   # Visualization of the results of a detection.
   vis_util.visualize_boxes_and_labels_on_image_array(
       image_np,
@@ -234,23 +241,21 @@ for image_path in TEST_IMAGE_PATHS:
       instance_masks=output_dict.get('detection_masks'),
       use_normalized_coordinates=True,
       line_thickness=8,
-      id_object = id_image,
-      list_obj = list_obj,
-      list_ctdt = list_ctdt)
-  id_image += 1
+      id_image=id_image,
+      id_object=id_object,
+      list_obj=list_obj,
+      list_ctdt=list_ctdt)
+  id_image[0] += 1
+  # Move file to folder inserted
+  mf.moveFile(image_path)
   plt.figure(figsize=IMAGE_SIZE)
   plt.imshow(image_np)
   plt.show()
 
-# print('Image')
-# for i in list_image:
-#   i.toString()
-# print('Object')
-# for i in list_obj:
-#   i.toString()
-# print('Chi tiet')
-# for i in list_ctdt:
-#   i.toString()
+func.themDuLieuBangImage(list_image)
+func.themDuLieuBangObject(list_obj)
+func.themDuLieuBangCTDT(list_ctdt)
+
 temp = 0
 l = len(list_image)
 json = '{'
@@ -262,9 +267,7 @@ for i in range(l):
   json += '\"date\": ' + '\"' + list_image[i].getDate() + '\",'
   json += '\"objects\": ['
   current_img_id = list_image[i].getId()
-  print("current: %s" %current_img_id)
   count_obj = sum(obj.getIdImage() == current_img_id for obj in list_ctdt)
-  print(count_obj)
   dem = 0
   while dem < count_obj:
     json += '{'

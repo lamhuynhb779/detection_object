@@ -572,9 +572,10 @@ def visualize_boxes_and_labels_on_image_array(
     groundtruth_box_visualization_color='black',
     skip_scores=False,
     skip_labels=False,
+    id_image=0,
     id_object=0,
-    list_obj = None,
-    list_ctdt = None):
+    list_obj=None,
+    list_ctdt=None):
 # My code
   list_name_prob = []
 # end my code
@@ -696,6 +697,7 @@ def visualize_boxes_and_labels_on_image_array(
           use_normalized_coordinates=use_normalized_coordinates)
   xl.thietLapListObjectVaChiTietDoiTuong(
     list_name_prob,
+    id_image,
     id_object,
     list_obj,
     list_ctdt

@@ -15,6 +15,7 @@ class MyImage:
 		return self.path
 
 	def setPath(self, path):
+		path = path.replace("\\","-")
 		self.path = path
 
 	def	getDate(self):
