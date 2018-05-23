@@ -252,9 +252,9 @@ for image_path in TEST_IMAGE_PATHS:
   plt.imshow(image_np)
   plt.show()
 
-func.themDuLieuBangImage(list_image)
-func.themDuLieuBangObject(list_obj)
-func.themDuLieuBangCTDT(list_ctdt)
+# func.themDuLieuBangImage(list_image)
+# func.themDuLieuBangObject(list_obj)
+# func.themDuLieuBangCTDT(list_ctdt)
 
 temp = 0
 l = len(list_image)
