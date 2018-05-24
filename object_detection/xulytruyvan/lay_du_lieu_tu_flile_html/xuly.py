@@ -61,8 +61,8 @@ def query_to_database():
 	arr = text2int(str1,numwords={})
 	tmp = ''
 	for i in arr:
-		tmp += ' name='
-		tmp += "\'"+i+"\'"
+		tmp += ' name LIKE '
+		tmp += "\'%"+i+"%\'"
 		if i != arr[-1]:
 			tmp += ' OR'
 
@@ -81,7 +81,7 @@ def query_to_database():
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
 	if request.method == 'POST':
-		return render_template("result.html", result = query_to_database(),content = get_data())
+		return render_template("searchpage.html", result = query_to_database(),content = get_data())
 
 if __name__ == '__main__':
 	app.run(debug = True)
