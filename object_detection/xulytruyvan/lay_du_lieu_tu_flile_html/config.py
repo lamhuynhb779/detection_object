@@ -6,7 +6,7 @@ def getConnection():
     connection = pymysql.connect(host='',
                                  user='root',
                                  password='',                             
-                                 db='detection_object',
+                                 db='object_detection',
                                  charset='utf8mb4',
                                  cursorclass=pymysql.cursors.DictCursor)
     return connection
