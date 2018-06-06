@@ -1,11 +1,12 @@
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
+from textblob import TextBlob
 import config as cf
 
 app = Flask(__name__)
 
-# Lấy dữ liệu từ thanh tiềm kiếm
+# Lấy dữ liệu từ thanh tim kiếm
 def get_data():
 	response = request.form['text']
 	return response
@@ -54,15 +55,25 @@ def text2int(textnum, numwords={}):
 			arr.append(str(result + current))
 	return arr
 
+# Chuyển danh từ số nhiều thành số ít
+def convert_plural_to_singular():
+	# Chuyển mảng đã xóa stopword thành chuỗi 
+	words=' '.join(remove_stopword())
+	blob = TextBlob(words)
+	singulars = [word.singularize() for word in blob.words]
+	return singulars
+
 # Truy vấn lên cơ sở dữ liệu
 def query_to_database():
-	# Chuyển mảng đã xóa stopword thành chuỗi để thỏa tham số của hàm text2int()
-	str1 = ' '.join(remove_stopword())
+	#chuyển danh từ số nhiều thành số ít
+	singulars = convert_plural_to_singular()
+	str1=' '.join(singulars)
+	#chuyển các chữ số thành số
 	arr = text2int(str1,numwords={})
 	tmp = ''
 	for i in arr:
-		tmp += ' name='
-		tmp += "\'"+i+"\'"
+		tmp += ' name LIKE '
+		tmp += "\'%"+i+"%\'"
 		if i != arr[-1]:
 			tmp += ' OR'
 
@@ -81,7 +92,7 @@ def query_to_database():
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
 	if request.method == 'POST':
-		return render_template("result.html", result = query_to_database(),content = get_data())
+		return render_template("searchpage.html", result = query_to_database(),content = get_data())
 
 if __name__ == '__main__':
 	app.run(debug = True)
