@@ -84,7 +84,8 @@ def query_to_database():
 		cursor.execute(sql)
 		new_arr = []
 		for row in cursor:
-			new_arr.append(row['duongdan'].replace('-','/'))
+			url = row['duongdan'].replace('-','/')
+			new_arr.append(url)
 		return new_arr
 	except Exception as e:
 		print(e)

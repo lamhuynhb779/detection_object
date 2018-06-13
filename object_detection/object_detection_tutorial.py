@@ -83,7 +83,7 @@ from utils import visualization_utils as vis_util
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 # PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 
-PATH_TO_CKPT = 'ssd_inception_v2_coco_2017_11_17' + '/frozen_inference_graph.pb'
+PATH_TO_CKPT = 'faster_rcnn_nas_coco_2018_01_28' + '/frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
 PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
@@ -252,13 +252,13 @@ for image_path in TEST_IMAGE_PATHS:
   id_image[0] += 1
   # Move file to folder inserted
   mf.moveFile(image_path)
-  plt.figure(figsize=IMAGE_SIZE)
-  plt.imshow(image_np)
-  plt.show()
+  # plt.figure(figsize=IMAGE_SIZE)
+  # plt.imshow(image_np)
+  # plt.show()
 
-# func.themDuLieuBangImage(list_image)
-# func.themDuLieuBangObject(list_obj)
-# func.themDuLieuBangCTDT(list_ctdt)
+func.themDuLieuBangImage(list_image)
+func.themDuLieuBangObject(list_obj)
+func.themDuLieuBangCTDT(list_ctdt)
 
 temp = 0
 l = len(list_image)
@@ -278,8 +278,7 @@ for i in range(l):
     json += '\"id\": ' + str(list_obj[temp].getId()) + ','
     json += '\"name\": ' + '\"' + list_obj[temp].getTenDoiTuong() + '\",'
     json += '\"probability\": ' + str(list_obj[temp].getXacSuat()) + ','
-    json += '\"id_image\": ' + str(list_ctdt[temp].getIdImage()) + ','
-    json += '\"soluong\": ' + str(list_ctdt[temp].getSoLuong())
+    json += '\"id_image\": ' + str(list_ctdt[temp].getIdImage())
     if dem + 1 == count_obj:
       json += '}'
     else:

@@ -56,8 +56,8 @@ def themDuLieuBangCTDT(list_ctdt):
 	cursor = connection.cursor()
 	for ctdt in list_ctdt:
 		try:
-			sql = "INSERT INTO chitietdoituong (id_object, id_image, soluong) VALUES (%s, %s, %s)"
-			cursor.execute(sql, (ctdt.getIdObject(), ctdt.getIdImage(), ctdt.getSoLuong()))
+			sql = "INSERT INTO chitietdoituong (id_object, id_image) VALUES (%s, %s)"
+			cursor.execute(sql, (ctdt.getIdObject(), ctdt.getIdImage()))
 			connection.commit()
 		except Exception as e:
 			print(e)

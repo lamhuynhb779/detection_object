@@ -2,11 +2,12 @@ import glob, shutil, os
 
 source = 'E:\\DoAnTruyVan_DetectObject\\object_detection\\'
 dest = 'E:\\DoAnTruyVan_DetectObject\\object_detection\\test_images\\inserted\\'
+dest1 = 'E:\\DoAnTruyVan_DetectObject\\object_detection\\xulytruyvan\\lay_du_lieu_tu_flile_html\\static\\test_images\\'
 
 def moveFile(file):
 	global source
 	global dest
-	shutil.move(source + file, dest)
+	shutil.move(source + file, dest1)
 
 def countFile():
 	path = 'E:\\DoAnTruyVan_DetectObject\\object_detection\\test_images\\'

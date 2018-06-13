@@ -2,7 +2,6 @@ class ChiTietDoiTuong:
 	def __init__(self):
 		self.id_object = 0
 		self.id_image = 0
-		self.soluong = 0
 		print('Khoi tao doi tuong ctdt')
 
 	def getIdObject(self):
@@ -17,11 +16,5 @@ class ChiTietDoiTuong:
 	def setIdImage(self, myid):
 		self.id_image = myid
 
-	def getSoLuong(self):
-		return self.soluong
-
-	def setSoLuong(self, soluong):
-		self.soluong = soluong
-
 	def toString(self):
-		print("id_obj: %s,id_img: %s,sl: %s" %(self.id_object, self.id_image, self.soluong))
+		print("id_obj: %s,id_img: %s,sl: %s" %(self.id_object, self.id_image))
